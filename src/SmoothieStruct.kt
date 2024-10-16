@@ -1,3 +1,4 @@
+
 val menu = mapOf(
     "Clássico" to mutableListOf("morango", "banana", "abacaxi", "manga", "pêssego", "mel", "gelo", "iogurte"),
     "Forest Berry" to mutableListOf("morango", "framboesa", "mirtilo", "mel", "gelo", "iogurte"),
@@ -7,11 +8,13 @@ val menu = mapOf(
     "Apenas sobremesas" to mutableListOf("banana", "sorvete", "chocolate", "amendoim", "cereja")
 )
 
-fun processOrder(smoothieName: String, modifications: String = ""): List<String> {
+fun processOrder(order: String): List<String> {
+    val parts = order.split(",").map { it.trim() }
+    val smoothieName = parts[0]
     val ingredients = menu[smoothieName]?.toMutableList() ?: return emptyList()
-    val parts = modifications.split(",").map { it.trim() }
 
-    for (operation in parts) {
+    for (i in 1..<parts.size) {
+        val operation = parts[i]
         when {
             operation.startsWith("+") -> ingredients.add(operation.substring(1))
             operation.startsWith("-") -> ingredients.remove(operation.substring(1))
@@ -22,5 +25,5 @@ fun processOrder(smoothieName: String, modifications: String = ""): List<String>
 }
 
 fun main() {
-    println(processOrder("Clássico", "+abacaxi, -morango"))
+    println(processOrder("Clássico, +abacaxi, -morango"))
 }
